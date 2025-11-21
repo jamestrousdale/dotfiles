@@ -5,6 +5,9 @@ if [ -x /opt/homebrew/bin/bash ]; then
   export SHELL=/opt/homebrew/bin/bash
 fi
 
+# Set PATH
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
+
 # Load login settings and environment variables
 if [[ -f ~/.profile ]]; then
   source ~/.profile
@@ -19,9 +22,6 @@ export BASH_SILENCE_DEPRECATION_WARNING=1
 
 # Set completion for make targets
 complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' ?akefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
-
-# Set PATH
-export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
 
 # Mise shims
 eval "$(mise activate bash)"
