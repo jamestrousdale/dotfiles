@@ -1,0 +1,48 @@
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+##### History settings #####
+# Big history
+export HISTSIZE=50000
+export HISTFILESIZE=100000
+
+# Don't record duplicate lines; wipe older duplicates
+export HISTCONTROL=ignoredups:erasedups
+
+# Don't bother storing these trivial commands
+export HISTIGNORE="ls:cd:pwd:clear:exit"
+
+# Append to history instead of overwriting
+shopt -s histappend
+
+# Write to $HISTFILE after each command, and reload new lines
+PROMPT_COMMAND='history -a; history -n; '"$PROMPT_COMMAND"
+
+# Up/down arrow = search by prefix (type 'git' then press ↑)
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+
+# Initialize starship prompt
+eval "$(starship init bash)"
+
+##### QoL Aliases #####
+alias ll='ls -lah'
+alias la='ls -A'
+alias ..='cd ..'
+alias ...='cd ../..'
+
+# Python
+alias py='python3'
+alias venv='python3 -m venv .venv && source .venv/bin/activate'
+
+# Git
+alias gs='git status'
+alias gl='git log --oneline --graph --decorate'
+alias gd='git diff'
+alias gc='git commit'
+alias gco='git checkout'
+
+# Kubernetes (if you use it)
+alias k='kubectl'
+alias kgp='kubectl get pods'
+alias kgs='kubectl get svc'

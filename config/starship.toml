@@ -1,0 +1,58 @@
+# --- General style ---
+add_newline = true
+
+[character]
+success_symbol = "[➜](bold green) "
+error_symbol = "[➜](bold red) "
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+style = "bold cyan"
+
+[git_branch]
+symbol = " "
+style = "bold purple"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "purple"
+format = "[$all_status$ahead_behind]($style) "
+conflicted = "✖ "
+staged = "+ "
+modified = "~ "
+untracked = "? "
+
+# --- Python ---
+[python]
+symbol = "🐍 "
+format = "[$symbol$virtualenv]($style) "
+style = "bold yellow"
+python_binary = "python3"
+
+# --- AWS (for infra work) ---
+[aws]
+symbol = "☁️  "
+format = "[$symbol$profile]($style) "
+style = "bold yellow"
+
+# --- Kubernetes ---
+[kubernetes]
+symbol = "⎈ "
+format = "[$symbol$context]($style) "
+style = "bold blue"
+disabled = false
+
+# --- Time (small, right side) ---
+[time]
+disabled = false
+format = "[$time]($style)"
+time_format = "%H:%M"
+style = "dimmed white"
+
+# --- Exit status (only on error) ---
+[status]
+disabled = false
+format = "[$symbol $status]($style) "
+symbol = "✖"
+style = "bold red"
