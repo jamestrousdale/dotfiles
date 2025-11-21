@@ -7,6 +7,17 @@ complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' ?akefile | sed 's/[^a-zA-Z0-
 # Mise shims
 eval "$(mise activate bash)"
 
+# poethepoet completion
+_poetry_poe_complete() {
+    if command -v poe >/dev/null; then
+        if [[ -z "$_POE_COMPLETION_LOADED" ]]; then
+            eval "$(poe _bash_completion)"
+            _POE_COMPLETION_LOADED=1
+        fi
+    fi
+}
+PROMPT_COMMAND="_poetry_poe_complete; $PROMPT_COMMAND"
+
 ##### History settings #####
 # Big history
 export HISTSIZE=50000
