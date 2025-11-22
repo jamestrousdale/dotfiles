@@ -63,3 +63,14 @@ alias gco='git checkout'
 alias k='kubectl'
 alias kgp='kubectl get pods'
 alias kgs='kubectl get svc'
+
+# Clear really clears...
+clear() {
+    # Clear
+    command clear
+    # Clear scrollback buffer
+    printf "\e[3J"
+}
+
+# Bind Ctrl+L to the enhanced clear function
+bind '"\C-l":"clear\n"'
