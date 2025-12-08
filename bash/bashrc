@@ -1,6 +1,16 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# Load per-machine local overrides (secrets, env vars) if present
+# Keep this file outside the repo (e.g. ~/.bashrc.local) and set permissions to 600
+if [ -f "$HOME/.bashrc.local" ]; then
+  # be conservative about world-readable secrets
+  if [ -r "$HOME/.bashrc.local" ]; then
+    # shellcheck disable=SC1090
+    source "$HOME/.bashrc.local"
+  fi
+fi
+
 # Set completion for make targets
 complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' ?akefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
 
