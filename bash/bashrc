@@ -11,6 +11,50 @@ if [ -f "$HOME/.bashrc.local" ]; then
   fi
 fi
 
+# Git completion (macOS + Linux/WSL)
+__dotfiles_source_first_readable() {
+  local candidate
+  for candidate in "$@"; do
+    if [ -r "$candidate" ]; then
+      # shellcheck disable=SC1090
+      source "$candidate"
+      return 0
+    fi
+  done
+  return 1
+}
+
+__dotfiles_load_git_completion() {
+  type __git_complete >/dev/null 2>&1 && return 0
+
+  local bashrc_dir git_exec_path
+  bashrc_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)"
+  git_exec_path="$(command -v git >/dev/null 2>&1 && git --exec-path 2>/dev/null || true)"
+
+  local candidates=(
+    "/usr/share/bash-completion/completions/git" \
+    "/usr/share/git/completion/git-completion.bash" \
+    "/usr/local/share/git/completion/git-completion.bash" \
+    "/Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash" \
+    "$bashrc_dir/completions/git-completion.bash"
+  )
+
+  if [ -n "$git_exec_path" ]; then
+    candidates+=(
+      "${git_exec_path%/libexec/git-core}/share/git-core/git-completion.bash"
+      "${git_exec_path%/lib/git-core}/share/git-core/git-completion.bash"
+      "${git_exec_path%/libexec/git-core}/share/git/completion/git-completion.bash"
+      "${git_exec_path%/lib/git-core}/share/git/completion/git-completion.bash"
+    )
+  fi
+
+  __dotfiles_source_first_readable "${candidates[@]}"
+}
+
+shopt -s progcomp 2>/dev/null || true
+__dotfiles_load_git_completion
+unset -f __dotfiles_load_git_completion __dotfiles_source_first_readable
+
 # Set completion for make targets
 complete -W "\`grep -oE '^[a-zA-Z0-9_.-]+:([^=]|$)' ?akefile | sed 's/[^a-zA-Z0-9_.-]*$//'\`" make
 
