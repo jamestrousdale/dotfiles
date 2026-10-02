@@ -66,6 +66,21 @@ if [[ -f /usr/share/bash-completion/bash_completion ]]; then
 fi
 eval "$(mise completion bash --include-bash-completion-lib)"
 
+__dotfiles_mise_complete() {
+  local current="${COMP_LINE:0:COMP_POINT}" prefix index
+  _usage_complete_mise
+  current="${current##*[[:space:]]}"
+  if [[ "$COMP_WORDBREAKS" == *:* && "$current" == *:* ]]; then
+    prefix="${current%:*}:"
+    for index in "${!COMPREPLY[@]}"; do
+      if [[ "${COMPREPLY[$index]}" == "$prefix"* ]]; then
+        COMPREPLY[$index]="${COMPREPLY[$index]#"$prefix"}"
+      fi
+    done
+  fi
+}
+complete -F __dotfiles_mise_complete mise
+
 # poethepoet completion
 _poetry_poe_complete() {
     if command -v poe >/dev/null; then
